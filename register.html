@@ -8,7 +8,9 @@
 <body>
     <div class="container">
         <h2>Daftar Akun Baru</h2>
-        <form action="proses_register.php" method="POST">
+        <div id="pesan-notifikasi"></div>
+        
+        <form id="form-register"> 
             <label for="nama">Nama:</label>
             <input type="text" id="nama" name="nama" required>
             
@@ -20,7 +22,8 @@
             
             <button type="submit">Daftar</button>
         </form>
-        <p>Sudah punya akun? <a href="login.php">Login di sini</a>.</p>
+        <p>Sudah punya akun? <a href="login.html">Login di sini</a>.</p>
     </div>
+    <script src="auth.js"></script> 
 </body>
 </html>

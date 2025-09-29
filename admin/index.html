@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Admin</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Halo, selamat datang <span id="admin-nama">Administrator</span>!</h2>
+        <p>Anda memiliki akses sebagai administrator. Di sini Anda bisa mengelola data pengguna.</p>
+        <a href="#" id="logout-btn">Logout</a>
+        <hr>
+
+        <h2>Manajemen Pengguna</h2>
+        <a href="tambah.html" class="tambah-btn">Tambah Pengguna Baru</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="data-pengguna-body"> 
+                </tbody>
+        </table>
+    </div>
+    <script src="../auth.js"></script> 
+    <script src="crud.js"></script> 
+</body>
+</html>
