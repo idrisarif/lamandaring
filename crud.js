@@ -13,12 +13,12 @@ async function tampilkanPengguna() {
     if (!tableBody) return;
     
     // Pastikan user adalah admin
-    const { data: userData } = await supabase.from('pengguna').select('role').single();
+    const { data: userData } = await supabase.from('user').select('role').single();
     if (!userData || userData.role !== 'admin') return;
 
     // Ambil semua data pengguna dari tabel
     const { data: users, error } = await supabase
-        .from('pengguna')
+        .from('user')
         .select('*')
         .order('id', { ascending: true }); // Mengurutkan berdasarkan ID
 
@@ -75,7 +75,7 @@ if (formTambahPengguna) {
 
         // 2. Tambahkan data profile ke tabel 'pengguna'
         const { error: profileError } = await supabase
-            .from('pengguna')
+            .from('user')
             .insert([
                 { 
                     id: data.user.id,
@@ -106,7 +106,7 @@ window.addEventListener('load', async () => {
     if (userId && document.getElementById('form-edit-pengguna')) {
         // Ambil data pengguna dari Supabase berdasarkan userId
         const { data, error } = await supabase
-            .from('pengguna')
+            .from('user')
             .select('*')
             .eq('id', userId)
             .single();
@@ -138,7 +138,7 @@ if (formEditPengguna) {
         
         // 1. Update data di tabel 'pengguna'
         const { error } = await supabase
-            .from('pengguna')
+            .from('user')
             .update({ nama: nama, email: email, role: role })
             .eq('id', id);
 
@@ -171,7 +171,7 @@ async function hapusPengguna(userId) {
     
     // 1. Hapus data dari tabel 'pengguna'
     const { error } = await supabase
-        .from('pengguna')
+        .from('user')
         .delete()
         .eq('id', userId);
 

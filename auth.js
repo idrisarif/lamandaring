@@ -3,8 +3,8 @@
 // =========================================================================
 
 // --- GANTI DENGAN KREDENSIAL PROYEK SUPABASE ANDA ---
-const SUPABASE_URL = '[SUPABASE_URL_ANDA]';
-const SUPABASE_ANON_KEY = '[SUPABASE_ANON_KEY_ANDA]';
+const SUPABASE_URL = 'https://iwioqeqmljulcyiiuese.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3aW9xZXFtbGp1bGN5aWl1ZXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMTkxMTUsImV4cCI6MjA3NDY5NTExNX0.6MRxNgTtEldhHVKVMhM7kffH4qF-iPGYk2_xmULGBG8';
 
 // Inisialisasi Supabase Client
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -49,7 +49,7 @@ if (formRegister) {
         } else {
             // 2. Tambahkan data profile ke tabel 'pengguna' (role default: user)
             const { error: profileError } = await supabase
-                .from('pengguna')
+                .from('user')
                 .insert([
                     { 
                         id: data.user.id, // Gunakan ID dari Supabase Auth
@@ -93,7 +93,7 @@ if (formLogin) {
         } else {
             // Cek role pengguna dari tabel 'pengguna'
             const { data: userData, error: userError } = await supabase
-                .from('pengguna')
+                .from('user')
                 .select('role')
                 .eq('email', data.user.email)
                 .single();
@@ -124,6 +124,7 @@ if (logoutBtn) {
         e.preventDefault();
         
         await supabase.auth.signOut();
+
         // Redirect ke halaman login setelah logout
         window.location.href = '../login.html'; 
     });
@@ -149,7 +150,7 @@ window.addEventListener('load', async () => {
     // 2. Jika login, ambil data profile (nama dan role)
     if (user) {
         const { data: userData, error } = await supabase
-            .from('pengguna')
+            .from('user')
             .select('*')
             .eq('id', user.id)
             .single();
