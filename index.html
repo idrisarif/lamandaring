@@ -2,16 +2,57 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Halaman Pengguna</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pengguna - Lamandaring</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
     <div class="container">
-        <h2>Halo, selamat datang <span id="user-nama">Pengguna</span>!</h2> 
+        <h2>Halo, selamat datang <span id="user-nama">Memuat...</span>!</h2> 
         <p>Ini adalah halaman khusus untuk Anda sebagai pengguna biasa.</p>
-        
-        <a href="login.html" id="logout-btn">Logout</a>
+        <button id="logout-btn" class="button-logout">Logout</button>
+        <p id="admin-link-container" style="display:none; margin-top: 20px;">
+            <a href="admin.html">Akses Halaman Admin</a>
+        </p>
     </div>
-    <script src="auth.js"></script> 
+
+    <script type="module" src="auth.js"></script>
+    <script type="module">
+        // Impor fungsi dan klien yang diperlukan dari auth.js
+        import { supabase, checkAuthAndRedirect, handleLogout } from './auth.js';
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Cek Sesi: Jika belum login, fungsi ini akan redirect ke login.html
+            const user = await checkAuthAndRedirect();
+            if (user) {
+                // 2. Ambil Nama Pengguna dan Role dari Tabel 'user'
+                const { data, error } = await supabase
+                    .from('user')
+                    .select('nama, role')
+                    .eq('id', user.id) // Gunakan ID Supabase Auth untuk mencocokkan dengan tabel 'user'
+                    .single();
+
+                if (data) {
+                    // Tampilkan nama pengguna
+                    document.getElementById('user-nama').textContent = data.nama;
+
+                    // Cek role: Jika admin, tampilkan link ke halaman admin
+                    if (data.role === 'admin') {
+                         document.getElementById('admin-link-container').style.display = 'block';
+                    }
+                } else if (error && error.code === 'PGRST116') {
+                    // User ada di Auth tapi belum ada di tabel 'user'
+                    document.getElementById('user-nama').textContent = 'Pengguna Baru (Lengkapi data)';
+                } else {
+                    console.error('Error memuat data user:', error);
+                    document.getElementById('user-nama').textContent = 'Error Memuat Nama';
+                }
+            }
+
+            // 3. Tambahkan event listener untuk tombol logout
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+        });
+    </script>
 </body>
 </html>

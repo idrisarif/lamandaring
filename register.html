@@ -2,13 +2,18 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Akun</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - Lamandaring</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h2>Daftar Akun Baru</h2>
-        <div id="pesan-notifikasi"></div>
+        
+        <div id="pesan-notifikasi" style="margin-bottom: 15px;"></div>
         
         <form id="form-register"> 
             <label for="nama">Nama:</label>
@@ -20,10 +25,60 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             
-            <button type="submit">Daftar</button>
+            <button type="submit" id="register-btn">Daftar</button>
         </form>
+        
         <p>Sudah punya akun? <a href="login.html">Login di sini</a>.</p>
     </div>
-    <script src="auth.js"></script> 
+
+    <script type="module" src="auth.js"></script> 
+
+    <script type="module">
+        // Impor fungsi yang dibutuhkan dari auth.js
+        import { handleRegister } from './auth.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const formRegister = document.getElementById('form-register');
+            const notifikasi = document.getElementById('pesan-notifikasi');
+            const registerBtn = document.getElementById('register-btn');
+
+            formRegister.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Mencegah reload halaman
+                
+                notifikasi.textContent = ''; // Hapus notifikasi sebelumnya
+                registerBtn.disabled = true; // Nonaktifkan tombol saat proses
+
+                const nama = document.getElementById('nama').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    // Panggil fungsi pendaftaran dari auth.js
+                    await handleRegister(nama, email, password);
+                    
+                    // Jika sukses, tampilkan pesan dan alihkan
+                    notifikasi.style.color = 'green';
+                    notifikasi.textContent = 'Pendaftaran berhasil! Silakan cek email Anda (jika konfirmasi diaktifkan) dan Login.';
+                    
+                    // Alihkan ke halaman login setelah beberapa detik
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+
+                } catch (error) {
+                    // Tampilkan pesan error jika pendaftaran gagal
+                    console.error('Pendaftaran Gagal:', error.message);
+                    notifikasi.style.color = 'red';
+
+                    if (error.message.includes('User already registered')) {
+                        notifikasi.textContent = 'Email ini sudah terdaftar. Silakan login atau gunakan email lain.';
+                    } else {
+                         notifikasi.textContent = `Pendaftaran gagal: ${error.message}`;
+                    }
+                    registerBtn.disabled = false; // Aktifkan kembali tombol
+                }
+            });
+        });
+    </script>
 </body>
 </html>
