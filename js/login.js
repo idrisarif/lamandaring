@@ -1,4 +1,4 @@
-import { supabase } from './auth.js';
+import { supabase } from './script.js';
 
 const loginForm = document.getElementById('login-form');
 
@@ -39,9 +39,9 @@ if (loginForm) {
         alert(`Selamat Datang, ${userData.role} ${userData.nama}!`);
 
         if (userData.role === 'Admin') {
-            window.location.href = 'admin.html';
+            window.location.href = 'admin-user.html';
         } else {
-            window.location.href = 'index.html';
+            window.location.href = 'home.html';
         }
     });
 }

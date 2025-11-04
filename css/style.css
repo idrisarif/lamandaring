@@ -1,0 +1,602 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&display=swap');
+
+/* ========================================================================= */
+/* --- 1. FONDASI & VARIABEL TEMA (DARK MODE) --- */
+/* ========================================================================= */
+
+:root{
+    --main-color:#8e44ad;
+    --red:#e74c3c;
+    --orange:#f39c12;
+    --light-color:#888;
+    --light-bg:#eee;
+    --black:#2c3e50;
+    --white:#fff;
+    --border:.1rem solid rgba(0,0,0,.2);
+}
+
+*{
+    font-family: 'Nunito', sans-serif;
+    margin:0; padding:0;
+    box-sizing: border-box;
+    outline: none; border:none;
+    text-decoration: none;
+}
+
+*::selection{
+    background-color: var(--main-color);
+    color:#fff;
+}
+
+html{
+    font-size: 62.5%; 
+    overflow-x: hidden;
+}
+
+body{
+    background-color: var(--light-bg);
+    padding: 0;
+}
+
+/* --- Dark Mode Configuration --- */
+body.dark{
+    --light-color:#aaa;
+    --light-bg:#333;
+    --black:#fff;
+    --white:#222;
+    --border:.1rem solid rgba(255,255,255,.2);
+}
+
+section{
+    padding:2rem;
+    margin: 0 ;
+    max-width: none;
+}
+
+.heading{
+    font-size: 2.5rem;
+    color:var(--black);
+    margin-bottom: 2.5rem;
+    border-bottom: var(--border);
+    padding-bottom: 1.5rem;
+    text-transform: capitalize;
+}
+
+/* ========================================================================= */
+/* --- 2. GAYA TOMBOL (BUTTONS) --- */
+/* ========================================================================= */
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn,
+.btn,
+.option-btn{
+    border-radius: .5rem;
+    color:#fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    padding:1rem 3rem;
+    margin-top: 1rem;
+}
+.delete-btn{
+    border-radius: .5rem;
+    color:#fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding:0.5rem 2rem;
+    margin-top: 1rem;
+}
+
+.btn, .option-btn, .delete-btn{
+    display: block;
+    width: 100%;
+}
+
+.inline-btn, .inline-option-btn, .inline-delete-btn{
+    display: inline-block;
+}
+
+.btn, .inline-btn{
+    background-color: var(--main-color);
+}
+.option-btn, .inline-option-btn{
+    background-color:var(--orange);
+}
+.delete-btn, .inline-delete-btn{
+    background-color: var(--red);
+}
+
+.inline-btn:hover, .btn:hover, .delete-btn:hover, .option-btn:hover{
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.flex-btn{
+    display: flex;
+    gap: 1rem;
+}
+
+/* Tombol Tambah (Open Modal) */
+#openModalBtn {
+    padding: 10px 18px;
+    font-size: 16px;
+    background-color: #4A90E2;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+/* Tombol Dasar */
+button, input[type="submit"] {
+    background-color: #949494;
+    color: white;
+    padding: 5px 5px;
+    margin-top: 1px;
+    font-size: 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover, input[type="submit"]:hover {
+    background-color: #d4d4d4;
+}
+
+
+/* ========================================================================= */
+/* --- 3. HEADER & AUTHENTICATION --- */
+/* ========================================================================= */
+
+.header{
+    position: sticky;
+    top:0; left:0; right: 0;
+    background-color: var(--white);
+    z-index: 1000;
+    border-bottom: var(--border);
+}
+
+.header .flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 1.5rem 2rem;
+}
+
+.header .flex .logo{
+    font-size: 2.5rem;
+    color: var(--black);
+}
+
+.header .flex .search-form{
+    width: 50rem;
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    padding:1.5rem 2rem;
+    display: flex;
+    gap:2rem;
+}
+
+.header .flex .search-form input{
+    width: 100%;
+    font-size: 1.8rem;
+    color:var(--black);
+    background:none;
+}
+
+.header .flex .search-form button{
+    background:none;
+    font-size: 2rem;
+    cursor: pointer;
+    color:var(--black);
+}
+
+.header .flex .icons div{
+    font-size: 2rem;
+    color:var(--black);
+    background-color: var(--light-bg);
+    border-radius: .5rem;
+    height: 4.5rem;
+    width: 4.5rem;
+    line-height: 4.5rem;
+    cursor: pointer;
+    text-align: center;
+    margin-left: .7rem;
+}
+
+.header .flex .profile{
+    position: absolute;
+    top:120%; right: 2rem;
+    background-color: var(--white);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    text-align: center;
+    transform: scale(0);
+    transition: .2s linear;
+    width: 30rem;
+}
+
+.header .flex .profile.active{
+    transform: scale(1);
+}
+
+.header .flex .profile .name{
+    font-size: 2rem;
+    color:var(--black);
+}
+
+.header .flex .profile .role{
+    font-size: 1.8rem;
+    color: var(--light-color);
+}
+
+#search-btn{
+    display: none;
+}
+
+
+/* ========================================================================= */
+/* --- 4. FORM LOGIN / REGISTER (FORM-CONTAINER) --- */
+/* ========================================================================= */
+
+.form-container{
+    min-height: calc(100vh - 20rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container form{
+    background-color: var(--white);
+    border-radius: .5rem;
+    padding: 2rem;
+    width: 50rem;
+}
+
+.form-container form h3{
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    color: var(--black);
+    text-align: center;
+}
+
+.form-container form p{
+    font-size: 1.7rem;
+    color: var(--light-color);
+    padding-top: 1rem;
+}
+
+.form-container form .box{
+    font-size: 1.8rem;
+    color: var(--black);
+    border-radius: .5rem;
+    padding: 1.4rem;
+    background-color: var(--light-bg);
+    width: 100%;
+    margin: 1rem 0;
+}
+
+
+/* ========================================================================= */
+/* --- 5. FOOTER --- */
+/* ========================================================================= */
+
+.footer{
+    background-color: var(--white);
+    border-top: var(--border);
+    position: sticky;
+    bottom: 0; left: 0; right: 0;
+    text-align: center;
+    font-size: 2rem;
+    padding:2.5rem 2rem;
+    color:var(--black);
+    margin-top: 1rem;
+    z-index: 1000;
+}
+
+.footer span{
+    color:var(--main-color);
+}
+
+/* ========================================================================= */
+/* --- 6. MODAL (POP-UP) --- */
+/* ========================================================================= */
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h3 {
+    font-size: 20px; 
+    margin-bottom: 15px; 
+    font-weight: bold; 
+}
+
+.close {
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content input, .modal-content select, .modal-content button {
+    width: 100%;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    margin-top: 16px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 1.5em; 
+    font-weight: bold;
+    display: block; 
+    margin-top: 10px;
+}
+
+/* ========================================================================= */
+/* --- 7. GAYA TABEL --- */
+/* ========================================================================= */
+ 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Dark Mode Tabel */
+body.dark table {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+}
+body.dark th {
+    background-color: #444; 
+    color: #e0e0e0;
+    border: 1px solid #000000;
+} 
+body.dark td {
+    border: 1px solid #444;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: middle;
+    font-size: 1.5rem;
+}
+table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+ 
+/* Tombol Aksi Tabel */
+.table-actions button {
+    background-color: #2196F3;
+    margin-right: 5px;
+}
+.table-actions button.delete {
+    background-color: #f44336;
+}
+.table-actions button:hover {
+    opacity: 0.9;
+}
+
+/* ========================================================================= */
+/* --- 8. GAYA KONTEN HOME (PUSAT HALAMAN) --- */
+/* ========================================================================= */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    min-height: calc(100vh - 10rem); 
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.main-content h2 {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--black); 
+}
+
+.main-content p {
+    font-size: 2.5rem;
+    color: var(--light-color); 
+}
+
+.main-content h2 span {
+    color: var(--main-color); 
+}
+
+/* ========================================================================= */
+/* --- 9. GAYA KONTEN ADMIN (PUSAT HALAMAN KECIL) --- */
+/* ========================================================================= */
+
+.admin-welcome-content {
+   /* Mirip dengan main-content, tetapi padding dan min-height disesuaikan */
+   display: flex;
+   flex-direction: column;
+   align-items: center; 
+   justify-content: center;
+   /* Mengurangi tinggi agar tidak terlalu makan tempat */
+   min-height: 25vh; 
+   padding: 2rem 2rem 0; /* Padding bawah dihilangkan agar dekat dengan tabel */
+   text-align: center;
+}
+
+.admin-welcome-content h2 {
+   font-size: 3rem; /* Ukuran Jauh Lebih Kecil dari 5rem di home.html */
+   font-weight: 700;
+   margin-bottom: 0.5rem;
+   color: var(--black); 
+}
+
+.admin-welcome-content p {
+   font-size: 1.8rem; /* Ukuran Teks Kecil */
+   color: var(--light-color); 
+}
+
+.admin-welcome-content h2 span {
+   color: var(--main-color); 
+}
+
+/* Responsivitas untuk admin-welcome-content */
+@media (max-width:991px){
+   .admin-welcome-content h2 {
+       font-size: 2.5rem;
+   }
+}
+@media (max-width:450px){
+   .admin-welcome-content h2 {
+       font-size: 2rem;
+   }
+   .admin-welcome-content p {
+       font-size: 1.5rem;
+   }
+}
+
+/* ========================================================================= */
+/* --- 10. MEDIA QUERIES (RESPONSIVITAS) --- */
+/* ========================================================================= */
+
+@media (max-width:991px){
+    html{
+        font-size: 55%;
+    }
+    .main-content h2 {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width:768px){
+
+    #search-btn{
+        display: inline-block;
+    }
+    .header .flex .search-form{
+        position: absolute;
+        top: 99%; left: 0; right: 0;
+        border-top: var(--border);
+        border-bottom: var(--border);
+        background-color: var(--white);
+        border-radius: 0;
+        width: auto;
+        padding: 2rem;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: .2s linear;
+    }
+
+    .header .flex .search-form.active{
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+    
+    /* Responsivitas Tabel (Tampilan Kartu) */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    table thead {
+        display: none;
+    }
+    table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 1rem;
+    }
+    table td {
+        position: relative;
+        padding-left: 50%;
+        text-align: left; 
+        border: none; 
+    }
+    table td::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 45%;
+        padding: 0.75rem 0.5rem 0.75rem 1rem;
+        font-weight: bold;
+        white-space: nowrap;
+        color: #555;
+    }
+    table td[data-label="Aksi:"] {
+        padding-left: 1rem;
+    }
+    table td[data-label="Aksi:"]::before {
+        display: none;
+    }
+    .table-actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    body.dark table {
+        box-shadow: none; 
+    }
+    body.dark th, 
+    body.dark td {
+        border: none; 
+    }
+}
+
+@media (max-width:450px){
+    html{
+        font-size: 50%;
+    }
+    
+    .flex-btn{
+        gap: 0;
+        flex-flow: column;
+    }
+    
+    .form-container form {
+        padding: 1.5rem;
+    }
+    .main-content h2 {
+        font-size: 3rem;
+    }
+    .main-content p {
+        font-size: 2rem;
+    }
+}

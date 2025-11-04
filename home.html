@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>EduWeb</title>
+   <link rel="icon" type="image/x-icon" href="images/pic-1.png">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+   <link rel="stylesheet" href="css/style.css">
+
+   <script type="module">
+      import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+      const supabaseUrl = 'https://iwioqeqmljulcyiiuese.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3aW9xZXFtbGp1bGN5aWl1ZXNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMTkxMTUsImV4cCI6MjA3NDY5NTExNX0.6MRxNgTtEldhHVKVMhM7kffH4qF-iPGYk2_xmULGBG8';      
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+        window.addEventListener('DOMContentLoaded', async () => {
+          const { data: { session } } = await supabase.auth.getSession()
+          if (session) {
+              console.log('Login OK:', session.user.email)
+              document.getElementById('userName').innerText = localStorage.getItem('nama') || 'Pengguna'
+              loadAllVideo()
+          } else {
+              window.location.href = 'login.html'
+          }
+      })
+   </script>
+
+</head>
+<body>
+<header class="header">
+   <section class="flex">
+      <a href="home.html" class="logo">EduWeb</a>
+      <div class="icons">
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+      <div class="profile">
+         <p class="role">Halo<p>
+         <h3 class="name" id="userName"></h3>
+         <p><span id="role"></span>
+            <a id="logoutBtn" class="delete-btn">Keluar</a>
+      </div>
+   </section>
+</header>
+
+<div class="main-content">
+   <h2>Halo, selamat datang <span id="homeUserName">Memuat...</span>!</h2>
+   <p>Ini adalah halaman khusus untuk Anda sebagai pengguna biasa.</p>
+</div>
+
+<script src="js/script.js" type="module"></script>
+</body>
+</html>

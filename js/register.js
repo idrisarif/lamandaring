@@ -1,4 +1,4 @@
-import { supabase } from './auth.js';
+import { supabase } from './script.js';
  
    document.getElementById('register-form').addEventListener('submit', async function (e) {
       e.preventDefault(); // Mencegah reload halaman
