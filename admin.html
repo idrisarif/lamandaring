@@ -4,21 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Admin - Lamandaring</title>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>
     <div class="container">
         <h2>Halo, selamat datang <span id="admin-nama">Administrator</span>!</h2>
         <p>Anda memiliki akses sebagai administrator. Di sini Anda bisa mengelola data pengguna.</p>
-        
         <button id="logout-btn">Logout</button>
-        
         <hr>
-
         <h2>Manajemen Pengguna</h2>
         <a href="register.html" class="tambah-btn">Tambah Pengguna Baru</a>
         
@@ -38,18 +32,70 @@
         </table>
     </div>
 
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="crud.js"></script>
+    <script type="module" src="./auth.js"></script> 
     
     <script type="module">
-        // Impor fungsi yang diperlukan
+        // Impor fungsi yang diperlukan dari auth.js
         import { checkAuthAndRedirect, handleLogout, supabase } from './auth.js';
-        import { getUsers, updateUser, deleteUser } from './crud.js';
 
-        // --- Fungsi Utama Halaman Admin ---
+        // ===========================================
+        // FUNGSI CRUD (DIPINDAHKAN DARI CRUD.JS)
+        // ===========================================
 
         /**
-         * Render data pengguna ke dalam tabel HTML.
+         * Mengambil semua data pengguna dari tabel 'user'.
+         */
+        async function getUsers() {
+            const { data, error } = await supabase
+                .from('user')
+                .select('user_id, nama, email, role')
+                .order('nama', { ascending: true }); 
+            
+            if (error) {
+                console.error('Error fetching users:', error);
+                throw new Error('Gagal memuat data pengguna.');
+            }
+            return data;
+        }
+
+        /**
+         * Memperbarui data pengguna (nama dan role) berdasarkan ID.
+         */
+        async function updateUser(userId, newNama, newRole) {
+            const { data, error } = await supabase
+                .from('user')
+                .update({ nama: newNama, role: newRole })
+                .eq('user_id', userId);
+
+            if (error) {
+                console.error('Error updating user:', error);
+                throw new Error('Gagal memperbarui data pengguna.');
+            }
+            return data;
+        }
+
+        /**
+         * Menghapus pengguna dari tabel 'user' berdasarkan ID.
+         */
+        async function deleteUser(userId) {
+            const { error } = await supabase
+                .from('user')
+                .delete()
+                .eq('id', userId); 
+
+            if (error) {
+                console.error('Error deleting user:', error);
+                throw new Error('Gagal menghapus data pengguna.');
+            }
+            return true;
+        }
+        
+        // ===========================================
+        // LOGIKA UTAMA ADMIN
+        // ===========================================
+
+        /**
+         * Render data pengguna ke dalam tabel HTML, termasuk event listener CRUD.
          * @param {Array} users - Daftar objek pengguna.
          */
         function renderUsers(users) {
@@ -69,8 +115,8 @@
                     <td>${user.email}</td>
                     <td>
                         <select id="role-${user.id}">
-                            <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
-                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            <option value="admin" ${user.role === 'Admin' ? 'selected' : ''}>Admin</option>
+                            <option value="user" ${user.role === 'User' ? 'selected' : ''}>User</option>
                         </select>
                     </td>
                     <td>
@@ -81,7 +127,7 @@
                 tableBody.appendChild(row);
             });
 
-            // Tambahkan Event Listeners untuk tombol Update dan Hapus
+            // Tambahkan Event Listeners untuk tombol Update
             document.querySelectorAll('.update-btn').forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -90,6 +136,7 @@
                     
                     if (confirm(`Yakin ingin update data ${newNama}?`)) {
                         try {
+                            // Panggil fungsi CRUD lokal
                             await updateUser(id, newNama, newRole);
                             alert('Data berhasil diupdate!');
                             loadAdminData(); // Muat ulang data
@@ -100,6 +147,7 @@
                 });
             });
 
+            // Tambahkan Event Listeners untuk tombol Hapus
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const id = e.target.getAttribute('data-id');
@@ -107,6 +155,7 @@
 
                     if (confirm(`Yakin ingin menghapus pengguna ${nama}?`)) {
                         try {
+                            // Panggil fungsi CRUD lokal
                             await deleteUser(id);
                             alert('Pengguna berhasil dihapus!');
                             loadAdminData(); // Muat ulang data
@@ -124,26 +173,25 @@
         async function loadAdminData() {
             // 1. Cek Sesi dan Otentikasi
             const user = await checkAuthAndRedirect();
-            
-            if (!user) return; // Sudah di-redirect jika tidak ada user
+            if (!user) return; 
 
-            // 2. Ambil Data Pengguna dan Role dari Tabel 'user'
+            // 2. Ambil Data Admin dan Role
             const { data: userData, error: userError } = await supabase
                 .from('user')
                 .select('nama, role')
-                .eq('id', user.id)
+                .eq('user_id', user.id)
                 .single();
 
             if (userError || !userData) {
                  alert('Gagal memuat data role. Silakan login kembali.');
-                 handleLogout();
+                 await handleLogout(); 
                  return;
             }
             
-            // 3. Pengecekan Role
-            if (userData.role !== 'admin') {
+            // 3. Pengecekan Role (Verifikasi)
+            if (userData.role !== 'Admin') {
                 alert('Akses Ditolak! Anda bukan Administrator.');
-                window.location.href = 'index.html'; // Alihkan jika bukan admin
+                window.location.href = 'index.html'; 
                 return;
             }
 
@@ -152,6 +200,7 @@
 
             // 4. Muat Data Pengguna (CRUD - Read)
             try {
+                // Panggil fungsi CRUD lokal
                 const users = await getUsers();
                 renderUsers(users);
             } catch (error) {
@@ -159,12 +208,15 @@
                     `<tr><td colspan="5">Gagal memuat data: ${error.message}</td></tr>`;
             }
 
-            // 5. Setup Logout Button
-            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            // 5. Setup Tombol Logout
+            const logoutBtn = document.getElementById('logout-btn'); 
+            if(logoutBtn) {
+                 logoutBtn.addEventListener('click', handleLogout); 
+            }
         }
 
         // Panggil fungsi utama saat dokumen dimuat
-        loadAdminData();
+        document.addEventListener('DOMContentLoaded', loadAdminData);
     </script>
 </body>
 </html>
