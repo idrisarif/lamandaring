@@ -39,7 +39,7 @@ if (loginForm) {
         alert(`Selamat Datang, ${userData.role} ${userData.nama}!`);
 
         if (userData.role === 'Admin') {
-            window.location.href = 'admin-user.html';
+            window.location.href = 'admin.html';
         } else {
             window.location.href = 'home.html';
         }
