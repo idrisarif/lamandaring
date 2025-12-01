@@ -21,7 +21,6 @@
           if (session) {
               console.log('Login OK:', session.user.email)
               document.getElementById('userName').innerText = localStorage.getItem('nama') || 'Pengguna'
-              loadAllVideo()
           } else {
               window.location.href = 'login.html'
           }

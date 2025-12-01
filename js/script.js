@@ -120,7 +120,7 @@ if (logoutBtn) {
 
 // Initial functions to run on page load for authenticated pages
 document.addEventListener('DOMContentLoaded', () => {
-    const protectedPages = ['/home.html', '/admin.html', '/login.html', '/register.html'];
+    const protectedPages = ['/home.html', '/admin.html'];
     if (protectedPages.some(page => window.location.pathname.endsWith(page))) {
         checkAuthAndRedirect();
         updateUserName();
