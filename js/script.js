@@ -120,8 +120,7 @@ if (logoutBtn) {
 
 // Initial functions to run on page load for authenticated pages
 document.addEventListener('DOMContentLoaded', () => {
-    const protectedPages = ['/home.html', '/courses.html', '/courses2.html', '/playlist.html', '/watch-video.html', '/pdf-viewer.html'
-    , '/admin.html', '/admin-courses.html', '/admin-courses2.html', '/admin-courses3.html', '/admin-playlist.html', '/admin-user.html'];
+    const protectedPages = ['/home.html', '/admin.html', '/login.html', '/register.html'];
     if (protectedPages.some(page => window.location.pathname.endsWith(page))) {
         checkAuthAndRedirect();
         updateUserName();
