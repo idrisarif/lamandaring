@@ -3,6 +3,7 @@ name: Prevent Supabase Idle
 on:
   schedule:
     - cron: '0 */6 * * *' # Menjalankan setiap 6 jam
+  workflow_dispatch:
 
 jobs:
   ping_supabase:
@@ -13,3 +14,4 @@ jobs:
           curl --request GET \
           --url "${{ secrets.SUPABASE_URL }}/rest/v1/user?select=user_id&limit=1" \
           --header "apikey: ${{ secrets.SUPABASE_ANON_KEY }}"
+          --fail

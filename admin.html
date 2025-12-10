@@ -25,12 +25,12 @@
             } else {
                 window.location.href = 'login.html';
             }
-        });
+        });                             
 
         async function loadAllUsers() {
             const { data, error } = await supabase
-                .from('user')
-                .select('*');
+                .from('user') // Nama tabel anda
+                .select('*'); // Ambil semua kolom
             
             if (error) {
                 console.error('Error load data:', error);
